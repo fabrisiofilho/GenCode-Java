@@ -1,0 +1,36 @@
+package br.com.ff.structure.write.template;
+
+public abstract class Template {
+
+    protected final String requiredTemplate;
+    protected final String prefixTemplate;
+    protected final String suffixTemplate;
+
+    protected Template(String requiredTemplate, String prefixTemplate, String suffixTemplate) {
+        if (requiredTemplate == null || requiredTemplate.isBlank()) {
+            throw new IllegalArgumentException("O texto obrigatório não pode ser nulo ou vazio.");
+        }
+
+        this.prefixTemplate = prefixTemplate;
+        this.suffixTemplate = suffixTemplate;
+        this.requiredTemplate = requiredTemplate;
+    }
+
+    public String getRequiredTemplate() {
+        return requiredTemplate;
+    }
+
+    public String getPrefixTemplate() {
+        return prefixTemplate;
+    }
+
+    public String getSuffixTemplate() {
+        return suffixTemplate;
+    }
+
+    public String getClassTemplate(String className) {
+        String prefix = getPrefixTemplate() != null ? getPrefixTemplate() : "";
+        String suffix = getSuffixTemplate() != null ? getSuffixTemplate() : "";
+        return prefix + className + suffix;
+    }
+}

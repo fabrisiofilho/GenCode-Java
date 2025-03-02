@@ -1,0 +1,26 @@
+{
+  "configuration": {
+
+  },
+  "entities": [
+    {
+      "name": "User",
+      "fields": [
+        {
+          "name": "Name",
+          "type": "String"
+        }
+      ]
+    }
+  ],
+  "queues": [
+    {
+      "name": "Queue"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Action"
+    }
+  ]
+}

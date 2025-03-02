@@ -1,0 +1,92 @@
+package br.com.ff.structure.read;
+
+import br.com.ff.models.Entity;
+import br.com.ff.models.Field;
+import br.com.ff.structure.write.GeneratorText;
+import br.com.ff.structure.write.template.child.EntityTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+public class EntityService {
+
+    public void create(List<Entity> entities) {
+        List<String> entitiesClass = new ArrayList<>();
+
+        for (Entity entity : entities) {
+            String entityClass = generateEntity(entity);
+            entitiesClass.add(entityClass);
+        }
+
+        return entitiesClass;
+    }
+
+    private String generateEntity(Entity entity) {
+        String packageName = "com.example.entities";
+        String imports = String.join("\n",
+                "import jakarta.persistence.*;",
+                "import lombok.*;",
+                "import java.io.Serializable;"
+        );
+
+        String className = entity.getName();
+
+        String fields = entity.getFields().stream()
+                .map(this::generateField)
+                .collect(Collectors.joining("\n    "));
+
+        Map<String, String> values = Map.of(
+            "PACKAGE", packageName,
+            "IMPORTS", imports,
+            "CLASS_NAME", className,
+            "TABLE_NAME", entity.getTableName(),
+            "SCHEMA", entity.getSchema(),
+            "FIELDS", fields
+        );
+
+        return GeneratorText.processTemplate(new EntityTemplate(), values);
+    }
+
+    private String generateField(Field field) {
+        StringBuilder fieldBuilder = new StringBuilder();
+
+        String type = field.getType();
+        String name = field.getName();
+
+        if (Boolean.TRUE.equals(field.getPrimaryKey())) {
+            fieldBuilder.append("    @Id\n");
+            fieldBuilder.append("    @GeneratedValue(strategy = GenerationType.IDENTITY)\n");
+        }
+
+        if (field.getRelationship() != null) {
+            switch (field.getRelationship()) {
+                case "OneToMany":
+                    fieldBuilder.append("    @OneToMany(mappedBy = \"" + field.getRelationshipMappedBy() + "\")\n");
+                    break;
+                case "ManyToOne":
+                    fieldBuilder.append("    @ManyToOne\n");
+                    fieldBuilder.append("    @JoinColumn(name = \"" + field.getRelationshipJoinColumn() + "\")\n");
+                    break;
+                case "OneToOne":
+                    fieldBuilder.append("    @OneToOne\n");
+                    fieldBuilder.append("    @JoinColumn(name = \"" + field.getRelationshipJoinColumn() + "\")\n");
+                    break;
+                case "ManyToMany":
+                    fieldBuilder.append("    @ManyToMany\n");
+                    fieldBuilder.append("    @JoinTable(\n");
+                    fieldBuilder.append("        name = \"" + field.getRelationshipJoinColumn() + "\",\n");
+                    fieldBuilder.append("        joinColumns = @JoinColumn(name = \"" + field.getRelationshipInverseJoinColumn() + "\"),\n");
+                    fieldBuilder.append("        inverseJoinColumns = @JoinColumn(name = \"" + field.getRelationshipJoinColumn() + "\")\n");
+                    fieldBuilder.append("    )\n");
+                    break;
+            }
+        }
+
+        fieldBuilder.append("    private ").append(type).append(" ").append(name).append(";");
+
+        return fieldBuilder.toString();
+    }
+
+}

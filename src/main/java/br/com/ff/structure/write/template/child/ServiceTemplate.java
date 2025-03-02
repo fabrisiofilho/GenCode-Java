@@ -1,0 +1,32 @@
+package br.com.ff.structure.write.template.child;
+
+import br.com.ff.structure.write.template.Template;
+
+public class ServiceTemplate extends Template {
+
+    private static final String TEMPLATE =
+        """
+        package {{PACKAGE}};
+    
+        {{IMPORTS}}
+        
+        @Service
+        @RequiredArgsConstructor
+        public class {{CLASS_NAME}} implements {{INTERFACE_CLASS}} {
+                
+        {{METHODS}}
+                
+        }
+        """;
+
+    private static final String SUFFIX =
+        """
+        ServiceImpl
+        """;
+
+    public ServiceTemplate() {
+        super(TEMPLATE, null, SUFFIX);
+    }
+
+
+}

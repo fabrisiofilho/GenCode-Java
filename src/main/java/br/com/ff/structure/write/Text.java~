@@ -1,0 +1,32 @@
+package br.com.ff.structure.write;
+
+import java.util.Map;
+
+public class Text {
+
+    private static String TEMPLATE =
+        """ 
+            package {{PACKAGE}};
+            
+            {{IMPORTS}}
+            
+            @Getter
+            @Setter
+            @NoArgsConstructor
+            @AllArgsConstructor
+            public class {{CLASS_NAME}}DTO {
+            
+            {{FIELDS}}
+            
+            }
+        """;
+
+    public static String processTemplate(Map<String, String> values) {
+        String result = TEMPLATE;
+        for (Map.Entry<String, String> entry : values.entrySet()) {
+            result = result.replace("{{" + entry.getKey() + "}}", entry.getValue());
+        }
+        return result;
+    }
+
+}

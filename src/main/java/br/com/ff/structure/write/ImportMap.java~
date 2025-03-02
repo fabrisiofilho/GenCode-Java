@@ -1,0 +1,18 @@
+package br.com.ff.structure.write;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class ImportMap {
+
+    public static final Map<String, String> IMPORTS = new HashMap<>();
+
+    static {
+        IMPORTS.put("lombok", "import lombok.*;");
+        IMPORTS.put("jakartaPersistence", "import jakarta.persistence.*;");
+        IMPORTS.put("serializable", "import java.io.Serializable;");
+    }
+
+    
+
+}
