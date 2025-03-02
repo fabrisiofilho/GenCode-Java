@@ -1,6 +1,6 @@
-package br.com.ff.parser;
+package br.com.ff.utils.parser;
 
-import br.com.ff.utils.RequiredValidation;
+import br.com.ff.utils.required.RequiredValidation;
 import com.google.gson.Gson;
 
 public class GeneratorJsonParser {

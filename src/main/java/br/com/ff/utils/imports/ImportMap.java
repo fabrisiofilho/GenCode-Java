@@ -1,4 +1,4 @@
-package br.com.ff.structure.write;
+package br.com.ff.utils.imports;
 
 import java.util.ArrayList;
 import java.util.HashMap;

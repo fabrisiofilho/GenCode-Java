@@ -1,4 +1,4 @@
-package br.com.ff.structure.write;
+package br.com.ff.utils.generator;
 
 import br.com.ff.structure.write.template.Template;
 

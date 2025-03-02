@@ -15,7 +15,38 @@ public class ControllerTemplate extends Template {
         @RequiredArgsConstructor
         public class {{CLASS_NAME}} {
         
-        {{METHODS}}
+        private final {{SERVICE_CLASS}} service;
+        
+        @GetMapping("/{id}")
+        public ResponseEntity<{{DTO_CLASS}}> findById(@PathVariable {{ID_TYPE}} id) {
+            return ResponseEntity.ok(service.findById(id));
+        }
+        
+        @GetMapping
+        public ResponseEntity<List<{{DTO_CLASS}}>> findAll() {
+            return ResponseEntity.ok(service.findAll());
+        }
+        
+        @PostMapping
+        public ResponseEntity<{{DTO_CLASS}}> create(@RequestBody {{DTO_CLASS}} dto) {
+            return ResponseEntity.ok(service.create(dto));
+        }
+        
+        @PutMapping("/{id}")
+        public ResponseEntity<{{DTO_CLASS}}> update(@PathVariable {{ID_TYPE}} id, @RequestBody {{DTO_CLASS}} dto) {
+            return ResponseEntity.ok(service.update(id, dto));
+        }
+        
+        @DeleteMapping("/{id}")
+        public ResponseEntity<Void> delete(@PathVariable {{ID_TYPE}} id) {
+            service.delete(id);
+            return ResponseEntity.noContent().build();
+        }
+        
+        @PatchMapping("/{id}/status")
+        public ResponseEntity<{{DTO_CLASS}}> alterStatus(@PathVariable {{ID_TYPE}} id, @RequestParam String status) {
+            return ResponseEntity.ok(service.alterStatus(id, status));
+        }
         
         }
         """;

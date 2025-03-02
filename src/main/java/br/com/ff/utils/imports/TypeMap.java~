@@ -1,0 +1,28 @@
+package br.com.ff.utils.types;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class TypeMap {
+
+    public static final Map<String, String> TYPES = new HashMap<>();
+
+    static {
+        TYPES.put("lombok", "import lombok.*;");
+        TYPES.put("jakartaPersistence", "import jakarta.persistence.*;");
+        TYPES.put("serializable", "import java.io.Serializable;");
+    }
+
+    public static List<String> getTypesByKeys(List<String> keys) {
+        List<String> importsList = new ArrayList<>();
+        for (String key : keys) {
+            if (TYPES.containsKey(key)) {
+                importsList.add(TYPES.get(key));
+            }
+        }
+        return importsList;
+    }
+
+}

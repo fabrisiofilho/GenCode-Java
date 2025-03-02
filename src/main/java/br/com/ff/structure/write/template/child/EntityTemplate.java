@@ -7,7 +7,7 @@ public class EntityTemplate extends Template {
     private static final String TEMPLATE =
         """
         package {{PACKAGE}};
-    
+        
         {{IMPORTS}}
         
         @Getter
@@ -16,7 +16,7 @@ public class EntityTemplate extends Template {
         @AllArgsConstructor
         public class {{CLASS_NAME}} {
         
-        {{FIELDS}}
+            {{FIELDS}}
         
         }
         """;

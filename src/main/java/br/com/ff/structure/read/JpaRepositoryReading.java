@@ -1,11 +1,11 @@
 package br.com.ff.structure.read;
 
 import br.com.ff.models.Entity;
-import br.com.ff.structure.write.GeneratorText;
-import br.com.ff.structure.write.ImportMap;
+import br.com.ff.utils.generator.GeneratorText;
+import br.com.ff.utils.imports.ImportMap;
 import br.com.ff.structure.write.template.Template;
 import br.com.ff.structure.write.template.child.JpaRepositoryTemplate;
-import br.com.ff.utils.CreateClassGenerator;
+import br.com.ff.utils.generator.CreateClassGenerator;
 
 import java.io.File;
 import java.util.List;
@@ -35,7 +35,8 @@ public class JpaRepositoryReading {
             "IMPORTS", imports,
             "CLASS_NAME", template.getClassTemplate(entity.getName()),
             "ENTITY_CLASS", entity.getName(),
-            "ENTITY_KEY_TYPE", "Long"
+            "ENTITY_KEY_TYPE", "Long",
+            "METHODS", ""
         );
 
         return GeneratorText.processTemplate(template, values);

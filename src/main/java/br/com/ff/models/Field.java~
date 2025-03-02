@@ -9,7 +9,9 @@ public class Field {
     @Required
     private Boolean primaryKey = false;
     private String columnName;
+    @Required
     private String name;
+    @Required
     private String type;
     private String defaultValue;
     private String relationship;

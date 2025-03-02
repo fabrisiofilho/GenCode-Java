@@ -1,6 +1,6 @@
 package br.com.ff.structure;
 
-import br.com.ff.parser.ParsedData;
+import br.com.ff.utils.parser.ParsedData;
 import br.com.ff.structure.read.*;
 
 import java.io.File;

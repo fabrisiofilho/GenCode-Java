@@ -1,4 +1,4 @@
-package br.com.ff.utils;
+package br.com.ff.utils.required;
 
 import java.lang.reflect.Field;
 import java.util.Collection;

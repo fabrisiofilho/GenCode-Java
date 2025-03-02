@@ -1,4 +1,4 @@
-package br.com.ff.parser;
+package br.com.ff.utils.parser;
 
 import br.com.ff.models.Action;
 import br.com.ff.models.Configuration;

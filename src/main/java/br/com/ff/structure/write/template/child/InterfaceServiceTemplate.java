@@ -11,11 +11,22 @@ public class InterfaceServiceTemplate extends Template {
         {{IMPORTS}}
         
         public interface {{CLASS_NAME}} {
-                
-        {{METHODS}}
+        
+        {{DTO_CLASS}} findById({{ID_TYPE}} id);
+        
+        List<{{DTO_CLASS}}> findAll();
+        
+        {{DTO_CLASS}} create({{DTO_CLASS}} dto);
+        
+        {{DTO_CLASS}} update({{ID_TYPE}} id, {{DTO_CLASS}} dto);
+        
+        void delete({{ID_TYPE}} id);
+        
+        {{DTO_CLASS}} alterStatus({{ID_TYPE}} id, String status);
         
         }
         """;
+
 
     private static final String SUFFIX =
         """

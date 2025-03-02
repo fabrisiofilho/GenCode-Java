@@ -1,6 +1,6 @@
 package br.com.ff.models;
 
-import br.com.ff.utils.Required;
+import br.com.ff.utils.required.Required;
 
 import java.util.List;
 

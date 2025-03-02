@@ -1,7 +1,7 @@
 package br.com.ff;
 
-import br.com.ff.parser.GeneratorJsonParser;
-import br.com.ff.parser.ParsedData;
+import br.com.ff.utils.parser.GeneratorJsonParser;
+import br.com.ff.utils.parser.ParsedData;
 import br.com.ff.structure.GeneratorStarting;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -10,7 +10,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 
 @Mojo(name = "touch", defaultPhase = LifecyclePhase.NONE)

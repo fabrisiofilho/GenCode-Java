@@ -1,11 +1,11 @@
 package br.com.ff.structure.read;
 
 import br.com.ff.models.Entity;
-import br.com.ff.structure.write.GeneratorText;
-import br.com.ff.structure.write.ImportMap;
+import br.com.ff.utils.generator.GeneratorText;
+import br.com.ff.utils.imports.ImportMap;
 import br.com.ff.structure.write.template.Template;
 import br.com.ff.structure.write.template.child.DtoTemplate;
-import br.com.ff.utils.CreateClassGenerator;
+import br.com.ff.utils.generator.CreateClassGenerator;
 
 import java.io.File;
 import java.util.List;
@@ -32,7 +32,7 @@ public class DtoReading {
         String imports = String.join("\n", ImportMap.getImportsByKeys(List.of("lombok")));
 
         String fields = entity.getFields().stream()
-                .map(field -> "private " + field.getType() + " " + field.getName() + ";")
+                .map(field -> "    private " + field.getType() + " " + field.getName() + ";")
                 .collect(Collectors.joining("\n    "));
 
         Map<String, String> values = Map.of(

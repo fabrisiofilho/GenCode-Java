@@ -14,7 +14,52 @@ public class ServiceTemplate extends Template {
         @RequiredArgsConstructor
         public class {{CLASS_NAME}} implements {{INTERFACE_CLASS}} {
                 
-        {{METHODS}}
+        private final {{REPOSITORY_CLASS}} repository;
+        private final ModelMapper modelMapper;
+                
+        @Override
+        public {{DTO_CLASS}} findById({{ID_TYPE}} id) {
+            return repository.findById(id)
+                .map(entity -> modelMapper.map(entity, {{DTO_CLASS}}.class))
+                .orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+        }
+    
+        @Override
+        public List<{{DTO_CLASS}}> findAll() {
+            return repository.findAll().stream()
+                .map(entity -> modelMapper.map(entity, {{DTO_CLASS}}.class))
+                .collect(Collectors.toList());
+        }
+    
+        @Override
+        public {{DTO_CLASS}} create({{DTO_CLASS}} dto) {
+            {{ENTITY_CLASS}} entity = modelMapper.map(dto, {{ENTITY_CLASS}}.class);
+            return modelMapper.map(repository.save(entity), {{DTO_CLASS}}.class);
+        }
+    
+        @Override
+        public {{DTO_CLASS}} update({{ID_TYPE}} id, {{DTO_CLASS}} dto) {
+            {{ENTITY_CLASS}} entity = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+            modelMapper.map(dto, entity);
+            return modelMapper.map(repository.save(entity), {{DTO_CLASS}}.class);
+        }
+    
+        @Override
+        public void delete({{ID_TYPE}} id) {
+            if (!repository.existsById(id)) {
+                throw new EntityNotFoundException("Entity not found");
+            }
+            repository.deleteById(id);
+        }
+    
+        @Override
+        public {{DTO_CLASS}} alterStatus({{ID_TYPE}} id, String status) {
+            {{ENTITY_CLASS}} entity = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+            entity.setStatus(status);
+            return modelMapper.map(repository.save(entity), {{DTO_CLASS}}.class);
+        }
                 
         }
         """;

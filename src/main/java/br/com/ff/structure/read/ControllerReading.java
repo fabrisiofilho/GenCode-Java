@@ -1,11 +1,11 @@
 package br.com.ff.structure.read;
 
 import br.com.ff.models.Entity;
-import br.com.ff.structure.write.GeneratorText;
-import br.com.ff.structure.write.ImportMap;
+import br.com.ff.utils.generator.GeneratorText;
+import br.com.ff.utils.imports.ImportMap;
 import br.com.ff.structure.write.template.Template;
 import br.com.ff.structure.write.template.child.ControllerTemplate;
-import br.com.ff.utils.CreateClassGenerator;
+import br.com.ff.utils.generator.CreateClassGenerator;
 
 import java.io.File;
 import java.util.List;
@@ -18,26 +18,48 @@ public class ControllerReading {
             ControllerTemplate template = new ControllerTemplate();
             String controllerClass = generateController(template, basePackage, entity);
             CreateClassGenerator.writeToFile(
-                controllerClass,
-                outputDirectory.getAbsolutePath(),
-                basePackage,
-                entity.getName(),
-                template.getClassTemplate(entity.getName())
+                    controllerClass,
+                    outputDirectory.getAbsolutePath(),
+                    basePackage,
+                    entity.getName(),
+                    template.getClassTemplate(entity.getName())
             );
         }
     }
 
     private String generateController(Template template, String basePackage, Entity entity) {
+        String imports = String.join("\n",
+            ImportMap.getImportsByKeys(List.of(
+                "restController",
+                "requestMapping",
+                "requiredArgsConstructor",
+                "responseEntity",
+                "getMapping",
+                "postMapping",
+                "putMapping",
+                "deleteMapping",
+                "patchMapping",
+                "pathVariable",
+                "requestBody",
+                "requestParam",
+                "list"
+        )));
 
-        String imports = String.join("\n", ImportMap.getImportsByKeys(List.of("restController", "requestMapping", "requiredArgsConstructor")));
+        String serviceClass = entity.getName() + "Service";
+        String dtoClass = entity.getName() + "DTO";
+        String idType = "Long";
 
         Map<String, String> values = Map.of(
             "PACKAGE", basePackage,
             "IMPORTS", imports,
             "CLASS_NAME", template.getClassTemplate(entity.getName()),
-            "PATH", entity.getName().toLowerCase()
+            "PATH", entity.getName().toLowerCase(),
+            "SERVICE_CLASS", serviceClass,
+            "DTO_CLASS", dtoClass,
+            "ID_TYPE", idType
         );
 
         return GeneratorText.processTemplate(template, values);
     }
+
 }

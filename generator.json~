@@ -17,9 +17,7 @@
         },
         {
           "name": "Email",
-          "type": "Email",
-          "relationship": "OneToMany",
-          "relationshipMappedBy": "user"
+          "type": "Email"
         }
       ]
     },

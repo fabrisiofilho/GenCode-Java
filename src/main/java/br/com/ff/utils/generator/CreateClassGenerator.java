@@ -1,0 +1,100 @@
+package br.com.ff.utils.generator;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class CreateClassGenerator {
+
+    public static void writeToFile(String content, String absolutePath, String basePackage, String domain, String className) {
+        try {
+            if (!isValidFileName(className)) {
+                throw new IllegalArgumentException("Nome de arquivo contém caracteres inválidos.");
+            }
+
+            String formattedContent = formatContent(content);
+
+            String packagePath = basePackage.replace(".", "/");
+            Path path = Paths.get(absolutePath, packagePath, domain.trim().toLowerCase());
+
+            if (!Files.exists(path)) {
+                Files.createDirectories(path);
+            }
+
+            Path filePath = path.resolve(className.trim() + ".java");
+
+            try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
+                writer.write(formattedContent);
+            }
+
+            System.out.println("Classe gerada em: " + filePath);
+        } catch (IOException e) {
+            System.err.println("Erro ao escrever no arquivo: " + e.getMessage());
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            System.err.println("Erro de validação: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Erro inesperado: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private static boolean isValidFileName(String className) {
+        String regex = "[^<>:\"/\\|?*]+";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(className);
+        return matcher.matches();
+    }
+
+    public static String formatJavaCode(String code) {
+        code = code.replaceAll("(?m)[ \t]+", " ");
+
+        code = code.replaceAll("(?m)\n{3,}", "\n\n");
+
+        code = code.replaceAll("\\{", " {");
+        code = code.replaceAll("\\}", "} ");
+
+        code = addIndentation(code);
+
+        code = code.replaceAll("[ \t]+$", "");
+
+        return code;
+    }
+
+    private static String addIndentation(String code) {
+        StringBuilder formattedCode = new StringBuilder();
+        int indentLevel = 0;
+        String[] lines = code.split("\n");
+
+        for (String line : lines) {
+            if (line.contains("}")) {
+                indentLevel--;
+            }
+
+            String indent = "    ".repeat(indentLevel);
+            formattedCode.append(indent).append(line.trim()).append("\n");
+
+            if (line.contains("{")) {
+                indentLevel++;
+            }
+        }
+
+        return formattedCode.toString();
+    }
+
+    private static String formatContent(String content) {
+        String formattedJavaCode = formatJavaCode(content);
+        return formatGeneratedCode(formattedJavaCode);
+    }
+
+    private static String formatGeneratedCode(String code) {
+        return code.replaceAll("(?m)^[ \t]+$", "")
+                .replaceAll("\n{3,}", "\n\n")
+                .trim();
+    }
+
+}
